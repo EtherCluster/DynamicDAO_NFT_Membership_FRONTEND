@@ -15,6 +15,7 @@ const CONTRACT_ADDRESS = "0x64C7d635C21a2a2709FbE234562E40bF7bE4759b";
 const App = () => {
 
     const [currentAccount, setCurrentAccount] = useState("");
+    const [name, setName] = useState("");
     
     const checkIfWalletIsConnected = async () => {
       const { ethereum } = window;
@@ -114,7 +115,7 @@ const App = () => {
         const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, myEpicNft.abi, signer);
 
         console.log("Going to pop wallet now to pay gas...")
-        let nftTxn = await connectedContract.makeAnEpicNFT();
+        let nftTxn = await connectedContract.makeAnEpicNFT(name);
 
         console.log("Mining...please wait.")
         await nftTxn.wait();
@@ -141,9 +142,21 @@ const App = () => {
   );
 
   const renderMintUI = () => (
-    <button onClick={askContractToMintNft} className="cta-button connect-wallet-button">
+
+<div>
+  <label style={{color: "white"}}>Enter Name here:</label>
+  <br></br>
+<input value={name} onChange={
+e => setName(e.target.value)
+
+}/>
+<br></br>
+<button onClick={askContractToMintNft} className="cta-button connect-wallet-button">
       Mint NFT
     </button>
+</div>
+
+
   )
 
   return (
